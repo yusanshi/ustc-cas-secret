@@ -11,11 +11,6 @@ from urllib.parse import urlencode
 from xml.etree import ElementTree
 from urllib.request import urlopen
 
-PORT = 8088
-VALIDATE_URL = "https://passport.ustc.edu.cn/serviceValidate"
-CAS_URL = "https://passport.ustc.edu.cn/login"
-REDIRECT_URL = "http://home.ustc.edu.cn/~liulangcao/cas-redirect.html"
-
 app = FastAPI()
 
 logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(message)s')
@@ -24,10 +19,11 @@ with open('data.json') as f:
 
 
 def check_ticket(ticket, service):
-    validate = VALIDATE_URL + "?" + urlencode({
-        "service": service,
-        "ticket": ticket
-    })
+    validate = "https://passport.ustc.edu.cn/serviceValidate?" + urlencode(
+        {
+            "service": service,
+            "ticket": ticket
+        })
     with urlopen(validate) as req:
         tree = ElementTree.fromstring(req.read())[0]
     cas = "{http://www.yale.edu/tp/cas}"
@@ -39,9 +35,10 @@ def check_ticket(ticket, service):
 
 @app.get('/')
 def main(request: Request, ticket=None):
-    service = REDIRECT_URL + "?" + urlencode({"target": request.base_url})
+    service = str(request.base_url) + "?" + urlencode(
+        {"hack": ".ustc.edu.cn/"})
     if ticket is None or (uid := check_ticket(ticket, service)) is None:
-        return RedirectResponse(CAS_URL + "?" +
+        return RedirectResponse("https://passport.ustc.edu.cn/login?" +
                                 urlencode({"service": service}))
 
     logging.info(f'{uid} logged in')
@@ -51,7 +48,7 @@ def main(request: Request, ticket=None):
             <title>USTC CAS 密信</title>
         </head>
         <body style="margin:30px">
-            <h3><a style="text-decoration:none;color:initial;" target="_blank" href="https://github.com/yusanshi/ustc-cas-secret">USTC CAS 密信</a></h3>
+            <h2><a style="text-decoration:none;color:initial;" target="_blank" href="https://github.com/yusanshi/ustc-cas-secret">USTC CAS 密信</a></h2>
             <p>Hi {uid}！{'以下是你的密信：' if uid in data else '找不到你的密信！'}</p>
             <div>{data.get(uid,'')}<div>
         </body>
@@ -60,4 +57,4 @@ def main(request: Request, ticket=None):
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='127.0.0.1', port=PORT)
+    uvicorn.run(app, host='127.0.0.1', port=8088)

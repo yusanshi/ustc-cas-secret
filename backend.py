@@ -2,6 +2,7 @@
 
 import json
 import uvicorn
+import logging
 
 from fastapi import FastAPI, Request
 from fastapi.responses import HTMLResponse
@@ -17,6 +18,7 @@ REDIRECT_URL = "http://home.ustc.edu.cn/~liulangcao/cas-redirect.html"
 
 app = FastAPI()
 
+logging.basicConfig(level=logging.INFO, format='[%(asctime)s] %(message)s')
 with open('data.json') as f:
     data = json.load(f)
 
@@ -42,6 +44,7 @@ def main(request: Request, ticket=None):
         return RedirectResponse(CAS_URL + "?" +
                                 urlencode({"service": service}))
 
+    logging.info(f'{uid} logged in')
     return HTMLResponse(f"""
     <html>
         <head>

@@ -50,7 +50,7 @@ def main(request: Request, ticket=None):
         <body style="margin:30px">
             <h2><a style="text-decoration:none;color:initial;" target="_blank" href="https://github.com/yusanshi/ustc-cas-secret">USTC CAS 密信</a></h2>
             <p>Hi {uid}！{'以下是你的密信：' if uid in data else '找不到你的密信！'}</p>
-            <div>{data.get(uid,'')}<div>
+            <div>{data.get(uid,'')}</div>
         </body>
     </html>
     """)

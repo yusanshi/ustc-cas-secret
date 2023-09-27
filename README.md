@@ -9,7 +9,7 @@
 
 在你的服务器上执行以下操作：
 
-1. `git clone https://github.com/yusanshi/ustc-cas-secret && cd ustc-cas-secret`
+1. `git clone https://github.com/yusanshi/ustc-cas-secret && cd ustc-cas-secret`；
 1. 创建 `data.json`，仿照 `data.sample.json` 在其中写入你想要展示给每个人的数据（学号中的字母大写，数据支持 HTML）；
 3. `pip install fastapi "uvicorn[standard]"`；
 4. `python backend.py`；

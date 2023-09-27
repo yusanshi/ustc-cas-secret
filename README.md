@@ -2,6 +2,8 @@
 
 利用 USTC CAS 给同学展示密信（使用场景示例：你是助教，给学生自助查分）。
 
+DEMO：<https://ds.yusanshi.com/>
+
 ![image](https://github.com/yusanshi/ustc-cas-secret/assets/36265606/d47ffd4b-3a79-46db-95a1-0234fbe29a2f)
 
 
@@ -13,7 +15,7 @@
 1. 创建 `data.json`，仿照 `data.sample.json` 在其中写入你想要展示给每个人的数据（学号中的字母大写，数据支持 HTML）；
 3. `pip install fastapi "uvicorn[standard]"`；
 4. `python backend.py`；
-4. 设置反向代理绑定到 `http://127.0.0.1:8088`（如 Nginx 服务器使用 proxy_pass）。
+4. 绑定域名、反向代理到 `http://127.0.0.1:8088`（如 Nginx 服务器使用 proxy_pass）。
 
 ## 原理解析
 
